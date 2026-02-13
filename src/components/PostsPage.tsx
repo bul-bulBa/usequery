@@ -1,8 +1,10 @@
 import { api } from '@/api/api'
-import { useQuery } from '@tanstack/react-query'
+import { QueryClient, useQueries, useQuery, useQueryClient, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import axios from 'axios'
+import { Suspense } from 'react'
 
-type Post = {
+export type Post = {
     id: string,
     title: string,
 
@@ -13,24 +15,39 @@ function getPosts() {
         .then(res => res.data)
 }
 
-export const PostsPage = () => {
-    const { data: posts, isLoading, isPending, isFetched } = useQuery({
+export function getPostsById(id: string) {
+    return api.get<Post>(`/posts/${id}`)
+        .then(res => res.data)
+}
+
+
+function PostsList() {
+
+    const {
+        data: posts,
+    } = useQuery({
         queryKey: ['posts'],
-        queryFn: getPosts
+        queryFn: getPosts,
     })
 
-    console.log(posts)
 
     return (
         <div>
-            {isLoading && <div>Loading...</div>}
-            {isPending && <div>isPending...</div>}
-            {isFetched && <div>isFetched...</div>}
             {posts?.map(p => (
                 <div key={p.id}>
-                    {p.title}
+                    <Link to='/posts/$id' params={{ id: p.id}}>
+                        {p.title}
+                    </Link>
                 </div>
             ))}
+        </div>
+    )
+}
+
+export const PostsPage = () => {
+    return (
+        <div>
+            <PostsList />
         </div>
     )
 }

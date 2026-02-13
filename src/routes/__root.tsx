@@ -1,22 +1,17 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import Header from '@/components/Header'
+import { Suspense } from 'react'
+
 
 const RootLayout = () => (
     <>
-        <div className="flex gap-2 items-center m-5">
-            <Link to={'/'}>
-                Home
-            </Link>
-            <Link to={'/users'}>
-                Users
-            </Link>
-            <Link to={'/posts'}>
-                Posts
-            </Link>
-        </div>
+        <Header />
         <div className='m-10'>
-            <Outlet />
+            <Suspense fallback={<h1>Loading...</h1>}>
+                <Outlet />
+            </Suspense>
         </div>
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools initialIsOpen={false} />
