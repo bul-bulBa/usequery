@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users/index'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
+import { Route as UsersPageRouteImport } from './routes/users/$page'
 import { Route as PostsIdRouteImport } from './routes/posts/$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const PostsIndexRoute = PostsIndexRouteImport.update({
   path: '/posts/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersPageRoute = UsersPageRouteImport.update({
+  id: '/users/$page',
+  path: '/users/$page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PostsIdRoute = PostsIdRouteImport.update({
   id: '/posts/$id',
   path: '/posts/$id',
@@ -38,12 +44,14 @@ const PostsIdRoute = PostsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/posts/$id': typeof PostsIdRoute
+  '/users/$page': typeof UsersPageRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/posts/$id': typeof PostsIdRoute
+  '/users/$page': typeof UsersPageRoute
   '/posts': typeof PostsIndexRoute
   '/users': typeof UsersIndexRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/posts/$id': typeof PostsIdRoute
+  '/users/$page': typeof UsersPageRoute
   '/posts/': typeof PostsIndexRoute
   '/users/': typeof UsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/posts/$id' | '/posts/' | '/users/'
+  fullPaths: '/' | '/posts/$id' | '/users/$page' | '/posts/' | '/users/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/posts/$id' | '/posts' | '/users'
-  id: '__root__' | '/' | '/posts/$id' | '/posts/' | '/users/'
+  to: '/' | '/posts/$id' | '/users/$page' | '/posts' | '/users'
+  id: '__root__' | '/' | '/posts/$id' | '/users/$page' | '/posts/' | '/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PostsIdRoute: typeof PostsIdRoute
+  UsersPageRoute: typeof UsersPageRoute
   PostsIndexRoute: typeof PostsIndexRoute
   UsersIndexRoute: typeof UsersIndexRoute
 }
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users/$page': {
+      id: '/users/$page'
+      path: '/users/$page'
+      fullPath: '/users/$page'
+      preLoaderRoute: typeof UsersPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/posts/$id': {
       id: '/posts/$id'
       path: '/posts/$id'
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PostsIdRoute: PostsIdRoute,
+  UsersPageRoute: UsersPageRoute,
   PostsIndexRoute: PostsIndexRoute,
   UsersIndexRoute: UsersIndexRoute,
 }

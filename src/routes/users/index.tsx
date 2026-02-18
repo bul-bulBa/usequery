@@ -1,3 +1,4 @@
+import UsersPage from "@/components/UsersPage";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute('/users/')({
@@ -5,9 +6,5 @@ export const Route = createFileRoute('/users/')({
 })
 
 function Users() {
-    return (
-        <div>
-            Hello from users!
-        </div>
-    )
+    return <UsersPage page={1} />
 }
